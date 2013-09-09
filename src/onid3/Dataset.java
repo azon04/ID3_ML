@@ -4,12 +4,13 @@
  */
 package onid3;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  *
  * @author Nurul Fithria
  */
-public class Data {
+public class Dataset {
     
  /**
  *
@@ -17,32 +18,46 @@ public class Data {
  */
     
     private ArrayList<Atr> attributes;
-    private ArrayList<Integer> values;
+    private ArrayList<ArrayList<Integer>> data;
     
-    public Data() {
-        
+    public Dataset() {
+        attributes = new ArrayList<Atr>();
+        data = new ArrayList<ArrayList<Integer>>();
     }
     
-    public Data(ArrayList<Atr> _attributes, ArrayList<Integer> _values) {
+    public Dataset(ArrayList<Atr> _attributes, ArrayList<ArrayList<Integer>> _values) {
         attributes = _attributes;
-        values = _values;
+        data = _values;
     }
     
     public void setAttributes(ArrayList<Atr> _attributes) {
         attributes = _attributes;
     }
     
-    public void setValue(Atr atr, String atr_value) {
-        int idx = attributes.indexOf(atr);
-        values.add(idx, new Integer(attributes.get(idx).getValues().indexOf(atr_value)));
+    public void addData(ArrayList<Integer> _data) {
+        data.add(_data);
     }
     
     public ArrayList<Atr> getAttributes() {
         return attributes;
     }
     
-    public ArrayList<Integer> getValues() {
-        return values;
+    public ArrayList<Integer> getRecord(int idx) {
+        return data.get(idx);
+    }
+    
+    public ArrayList<ArrayList<Integer>> getData() {
+        return data;
+    }
+    
+    public void PrintDataset() {
+        ListIterator<Atr> _iterAtr = attributes.listIterator();
+        while (_iterAtr.hasNext()) {
+            Atr atr = _iterAtr.next();
+            System.out.println(atr.getName());
+            System.out.println(atr.getValues().toString());
+        }
+        System.out.println(data.toString());
     }
    
 }

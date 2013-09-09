@@ -2,7 +2,7 @@ package com.on.Alg;
 
 
 import java.util.Dictionary;
-import onid3.Data;
+import onid3.Dataset;
 
 /*
  * To change this template, choose Tools | Templates
@@ -15,7 +15,7 @@ import onid3.Data;
  */
 public class ID3 {
     TreeMap<Integer, DataGainAtribute> root = null;
-    Data dataset; 
+    Dataset dataset; 
     int classIdx = 0;
     
     public ID3() {
@@ -100,13 +100,13 @@ public class ID3 {
         int label;
     }
     
-    public void Classify(Data trainData) {
+    public void Classify(Dataset trainData) {
         if(root == null) return;
         TreeMap<Integer,DataGainAtribute> node = root;
         while(node.data.label < 0) {
-            node = node.children.get(trainData.getValues().get(node.data.attr_idx));
+           // node = node.children.get(trainData.getValues().get(node.data.attr_idx));
         }
-        trainData.getValues().add(classIdx, node.data.label);
+        //trainData.getValues().add(classIdx, node.data.label);
     }
     
     public void Classify(int[][] trainData) {

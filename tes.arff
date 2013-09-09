@@ -1,0 +1,12 @@
+@attribute outlook {sunny,overcast,rain}
+
+@attribute humidity {high,normal}
+
+@attribute wind {strong,weak}
+
+@attribute playtennis {yes,no}
+
+@data
+sunny,high,strong,yes
+sunny,high,weak,no
+rain,normal,weak,yes
