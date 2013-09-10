@@ -4,6 +4,7 @@
  */
 package onid3;
 
+import com.on.Alg.ID3;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ public class OnID3 {
         Parser _parser = new Parser();
         Dataset _dataset = _parser.loadDataset("tes.arff");
         _dataset.PrintDataset();
-        
+        ID3 id3 = new ID3(_dataset);
+        id3.GenerateModel();
     }
 }
