@@ -24,6 +24,25 @@ public class OnID3 {
         Dataset _dataset = _parser.loadDataset("tes.arff");
         _dataset.PrintDataset();
         ID3 id3 = new ID3(_dataset);
+        
+        System.out.println("");
+        System.out.println("==============");
+        System.out.println("Full Model");
+        System.out.println("==============");
         id3.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("==============");
+        System.out.println("Slit Model : 66 %");
+        System.out.println("==============");
+        //id3.showGainCalculation = false;
+        id3.GenerateModelBySplit(66);
+        
+        System.out.println("");
+        System.out.println("==============");
+        System.out.println("k-fold Model : 3");
+        System.out.println("==============");
+        //id3.showGainCalculation = false;
+        id3.GenerateModelByKFold(3);
     }
 }

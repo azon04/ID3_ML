@@ -1,11 +1,9 @@
+@relation ''
+
 @attribute outlook {sunny,overcast,rain}
-
 @attribute temprature {hot,mild,cool}
-
 @attribute humidity {high,normal}
-
 @attribute wind {strong,weak}
-
 @attribute playtennis {yes,no}
 
 @data
