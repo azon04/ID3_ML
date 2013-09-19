@@ -17,7 +17,7 @@ import onid3.Dataset;
 public class ID3 {
     TreeMap<Integer, DataGainAtribute> root = null;
     Dataset dataset; 
-    int classIdx = 0;
+    public int classIdx = 0;
     public boolean showGainCalculation = true;
     
     public ID3(Dataset _dataset) {
@@ -106,7 +106,7 @@ public class ID3 {
                     newNode.data.label = mostCommonValueOfClass(samples);
                     node.AddChildren(value, newNode);
                 } else {
-                    attributes.remove(new Integer(bestAtribIdx));
+                    System.out.print(attributes.remove(new Integer(bestAtribIdx)));
                     
                     TreeMap<Integer, DataGainAtribute> newNode = 
                             OnID3(sample_vi, attributes);
@@ -261,6 +261,10 @@ public class ID3 {
         float gain;
         int label = -1;
 
+        public String getStringValue(int attribut, int value) {
+            return dataset.getAttributes().get(attribut).getValues().get(value);
+        }
+        
         @Override
         public String toString() {
             String s = dataset.getAttributes().get(attr_idx).getName();
@@ -281,7 +285,7 @@ public class ID3 {
         }
     }
     
-    private float accuration(ArrayList<ArrayList<Integer>> data) {
+    public float accuration(ArrayList<ArrayList<Integer>> data) {
         int countSame = 0;
         for(int i=0; i<data.size();i++) {
             TreeMap<Integer,DataGainAtribute> node = root;

@@ -1,0 +1,30 @@
+@relation ''
+
+@attribute outlook {sunny,overcast,rain}
+@attribute temprature {hot,mild,cool}
+@attribute humidity {high,normal}
+@attribute wind {strong,weak}
+@attribute playtennis {yes,no}
+
+@data
+sunny,hot,normal,weak,yes
+sunny,mild,high,strong,no
+sunny,mild,normal,weak,yes
+sunny,cool,high,strong,no
+sunny,cool,high,weak,no
+sunny,cool,normal,strong,yes
+overcast,hot,high,strong,yes
+overcast,hot,normal,strong,yes
+overcast,mild,high,weak,yes
+overcast,mild,normal,strong,yes
+overcast,mild,normal,weak,yes
+overcast,cool,high,strong,yes
+overcast,cool,high,weak,yes
+overcast,cool,normal,weak,yes
+rain,hot,high,strong,no
+rain,hot,high,weak,yes
+rain,hot,normal,strong,no
+rain,hot,normal,weak,yes
+rain,mild,normal,strong,no
+rain,cool,high,strong,no
+rain,cool,high,weak,yes
