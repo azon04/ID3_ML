@@ -51,13 +51,20 @@ public class Dataset {
     }
     
     public void PrintDataset() {
-        ListIterator<Atr> _iterAtr = attributes.listIterator();
+        /*ListIterator<Atr> _iterAtr = attributes.listIterator();
         while (_iterAtr.hasNext()) {
             Atr atr = _iterAtr.next();
             System.out.println(atr.getName());
             System.out.println(atr.getValues().toString());
+        }*/
+        for(int i=0; i<data.size(); i++) {
+            data.get(i);
+            for(int j=0; j < data.get(i).size(); j++) {
+                System.out.print(attributes.get(j).getValues().get(data.get(i).get(j)) + ",");
+            }
+            System.out.println("");
         }
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
     }
    
 }

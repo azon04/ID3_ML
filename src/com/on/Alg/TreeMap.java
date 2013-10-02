@@ -38,7 +38,7 @@ public class TreeMap<K,V> {
         Enumeration<K> keyIter = children.keys();
         while(keyIter.hasMoreElements()) {
            K key = keyIter.nextElement();
-            System.out.print(key);
+           System.out.print(key);
            String s = "-----";
            children.get(key).PrintTreeWithPrefix(s);
         }

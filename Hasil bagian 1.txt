@@ -1,0 +1,129 @@
+Model data 1
+==============
+Full Model
+==============
+================================
+Gain (outlook) = 0.24674982
+Gain (temprature) = 0.029222548
+Gain (humidity) = 0.15183553
+Gain (wind) = 0.048127055
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.5709505
+Gain (humidity) = 0.97095054
+Gain (wind) = 0.01997298
+Atribut Selected : humidity
+================================
+================================
+Gain (temprature) = 0.01997307
+Gain (wind) = 0.9709506
+Gain (humidity) = 0.0199731
+Atribut Selected : wind
+================================
+===TREE
+outlook
+rain-----wind
+-----weak----------yes
+-----strong----------no
+overcast-----yes
+sunny-----humidity
+-----normal----------yes
+-----high----------no
+Accuracy : 100.0%
+
+
+Model Data ke 2
+==============
+Full Model
+==============
+================================
+Gain (outlook) = 0.279982
+Gain (temprature) = 0.06364125
+Gain (humidity) = 0.0784958
+Gain (wind) = 0.0784958
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.5849625
+Gain (humidity) = 0.45914796
+Gain (wind) = 0.0
+Atribut Selected : temprature
+================================
+================================
+Gain (humidity) = 1.0
+Gain (wind) = 1.0
+Atribut Selected : humidity
+================================
+================================
+Gain (wind) = 0.9709506
+Gain (humidity) = 0.0199731
+Gain (temprature) = 0.01997307
+Atribut Selected : wind
+================================
+===TREE
+outlook
+rain-----wind
+-----weak----------yes
+-----strong----------no
+overcast-----yes
+sunny-----temprature
+-----cool----------yes
+-----mild----------humidity
+----------normal---------------yes
+----------high---------------no
+-----high----------no
+Accuracy : 100.0%
+
+Hasil Klasifikasi Data 3 ke Model 1
+100.0%
+
+sunny,hot,normal,weak,yes
+sunny,mild,high,strong,no
+sunny,mild,normal,weak,yes
+sunny,cool,high,strong,no
+sunny,cool,high,weak,no
+sunny,cool,normal,strong,yes
+overcast,hot,high,strong,yes
+overcast,hot,normal,strong,yes
+overcast,mild,high,weak,yes
+overcast,mild,normal,strong,yes
+overcast,mild,normal,weak,yes
+overcast,cool,high,strong,yes
+overcast,cool,high,weak,yes
+overcast,cool,normal,weak,yes
+rain,hot,high,strong,no
+rain,hot,high,weak,yes
+rain,hot,normal,strong,no
+rain,hot,normal,weak,yes
+rain,mild,normal,strong,no
+rain,cool,high,strong,no
+rain,cool,high,weak,yes
+
+Hasil Klasifikasi Data 3 ke Model 2
+85.71429%
+
+sunny,hot,normal,weak,yes
+sunny,mild,high,strong,no
+sunny,mild,normal,weak,yes
+sunny,cool,high,strong,no
+sunny,cool,high,weak,no
+sunny,cool,normal,strong,yes
+overcast,hot,high,strong,yes
+overcast,hot,normal,strong,yes
+overcast,mild,high,weak,yes
+overcast,mild,normal,strong,yes
+overcast,mild,normal,weak,yes
+overcast,cool,high,strong,yes
+overcast,cool,high,weak,yes
+overcast,cool,normal,weak,yes
+rain,hot,high,strong,no
+rain,hot,high,weak,yes
+rain,hot,normal,strong,no
+rain,hot,normal,weak,yes
+rain,mild,normal,strong,no
+rain,cool,high,strong,no
+rain,cool,high,weak,yes
+
+
+Analisis : 
