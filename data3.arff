@@ -13,8 +13,12 @@ sunny,mild,normal,weak,yes
 sunny,cool,high,strong,no
 sunny,cool,high,weak,no
 sunny,cool,normal,strong,yes
+sunny,cool,normal,weak,yes
 overcast,hot,high,strong,yes
+overcast,hot,high,weak,yes
 overcast,hot,normal,strong,yes
+overcast,hot,normal,weak,yes
+overcast,mild,high,strong,yes
 overcast,mild,high,weak,yes
 overcast,mild,normal,strong,yes
 overcast,mild,normal,weak,yes
@@ -25,6 +29,14 @@ rain,hot,high,strong,no
 rain,hot,high,weak,yes
 rain,hot,normal,strong,no
 rain,hot,normal,weak,yes
+rain,mild,high,strong,no
+rain,mild,high,weak,yes
+rain,mild,normal,strong,no
+rain,mild,normal,weak,yes
+rain,cool,high,strong,no
+rain,cool,high,weak,yes
+rain,cool,normal,strong,no
+rain,cool,normal,weak,yes
 rain,mild,normal,strong,no
 rain,cool,high,strong,no
 rain,cool,high,weak,yes

@@ -1,0 +1,166 @@
+run:
+outlook
+[sunny, overcast, rain]
+temprature
+[hot, mild, cool]
+humidity
+[high, normal]
+wind
+[strong, weak]
+playtennis
+[yes, no]
+[[0, 0, 0, 1, 1], [0, 0, 0, 0, 1], [1, 0, 0, 1, 0], [2, 1, 0, 1, 0], [2, 2, 1, 1, 0], [2, 2, 1, 0, 1], [1, 2, 1, 0, 0], [0, 1, 0, 1, 1], [0, 2, 1, 1, 0], [2, 1, 1, 1, 0], [0, 1, 1, 0, 0], [1, 1, 0, 0, 0], [1, 0, 1, 1, 0], [2, 1, 0, 0, 1]]
+
+==============
+Full Model
+==============
+================================
+Gain (outlook) = 0.24674982
+Gain (temprature) = 0.029222548
+Gain (humidity) = 0.15183553
+Gain (wind) = 0.048127055
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.5709505
+Gain (humidity) = 0.97095054
+Gain (wind) = 0.01997298
+Atribut Selected : humidity
+================================
+================================
+Gain (temprature) = 0.01997307
+Gain (wind) = 0.9709506
+Gain (humidity) = 0.0199731
+Atribut Selected : wind
+================================
+===TREE
+outlook
+2-----wind
+-----1----------yes
+-----0----------no
+1-----yes
+0-----humidity
+-----1----------yes
+-----0----------no
+Accuracy : 100.0%
+
+==============
+Slit Model : 66 %
+==============
+================================
+Gain (outlook) = 0.3244094
+Gain (temprature) = 0.10218716
+Gain (humidity) = 0.09109104
+Gain (wind) = 0.07278019
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.8112781
+Gain (humidity) = 0.8112781
+Gain (wind) = 0.12255621
+Atribut Selected : temprature
+================================
+================================
+Gain (humidity) = 0.2516291
+Gain (wind) = 0.9182958
+Gain (temprature) = 0.2516291
+Atribut Selected : wind
+================================
+===TREE
+outlook
+2-----wind
+-----1----------yes
+-----0----------no
+1-----yes
+0-----temprature
+-----2----------yes
+-----1----------no
+-----0----------no
+Accuracy : 75.0%
+
+==============
+k-fold Model : 3
+==============
+14
+++++++++++++++++++++++++++
+Fold-1
+================================
+Gain (outlook) = 0.15200728
+Gain (temprature) = 0.04306841
+Gain (humidity) = 0.081792355
+Gain (wind) = 0.0025652945
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.2516291
+Gain (humidity) = 0.9182958
+Gain (wind) = 0.2516291
+Atribut Selected : humidity
+================================
+================================
+Gain (temprature) = 0.2516291
+Gain (wind) = 0.9182958
+Gain (humidity) = 0.0
+Atribut Selected : wind
+================================
+===TREE
+outlook
+2-----wind
+-----1----------yes
+-----0----------no
+1-----yes
+0-----humidity
+-----1----------yes
+-----0----------no
+Fold-1 Accuracy : 100.0%
+++++++++++++++++++++++++++
+++++++++++++++++++++++++++
+Fold-2
+================================
+Gain (outlook) = 0.31976005
+Gain (temprature) = 0.31976005
+Gain (humidity) = 0.22478747
+Gain (wind) = 0.024757594
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 1.0
+Gain (humidity) = 1.0
+Gain (wind) = 0.0
+Atribut Selected : temprature
+================================
+===TREE
+outlook
+2-----yes
+1-----yes
+0-----temprature
+-----2----------yes
+-----1----------yes
+-----0----------no
+Fold-2 Accuracy : 50.0%
+++++++++++++++++++++++++++
+++++++++++++++++++++++++++
+Fold-3
+================================
+Gain (outlook) = 0.6849774
+Gain (temprature) = 0.018310755
+Gain (humidity) = 0.09109104
+Gain (wind) = 0.07278019
+Atribut Selected : outlook
+================================
+================================
+Gain (temprature) = 0.2516291
+Gain (humidity) = 0.2516291
+Gain (wind) = 0.9182958
+Atribut Selected : wind
+================================
+===TREE
+outlook
+2-----wind
+-----1----------yes
+-----0----------no
+1-----yes
+0-----no
+Fold-3 Accuracy : 50.0%
+++++++++++++++++++++++++++
+BUILD SUCCESSFUL (total time: 2 seconds)
