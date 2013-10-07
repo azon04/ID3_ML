@@ -14,7 +14,7 @@ import onid3.Dataset;
  *
  * @author Ahmad Fauzan
  */
-public class ID3 {
+public class ID3 implements Classifier{
     TreeMap<Integer, DataGainAtribute> root = null;
     Dataset dataset; 
     public int classIdx = 0;
