@@ -18,5 +18,7 @@ public interface Classifier {
     public void GenerateModelByKFold(int k);
     public void Classify(Dataset trainData);
     public float accuration(ArrayList<ArrayList<Integer>> data);
+    public int getClsIdx();
+    public void setClsIdx(int idx);
     
 }

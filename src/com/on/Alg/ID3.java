@@ -254,6 +254,18 @@ public class ID3 implements Classifier{
         }
         return gain;
     }
+
+    @Override
+    public int getClsIdx() {
+        return classIdx;
+    }
+
+    @Override
+    public void setClsIdx(int idx) {
+        classIdx = idx;
+    }
+
+    
     
     class DataGainAtribute {
         int attr_idx;

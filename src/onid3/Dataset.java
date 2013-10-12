@@ -19,6 +19,7 @@ public class Dataset {
     
     private ArrayList<Atr> attributes;
     private ArrayList<ArrayList<Integer>> data;
+    private int _class = -1;
     
     public Dataset() {
         attributes = new ArrayList<Atr>();

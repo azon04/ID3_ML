@@ -10,6 +10,6 @@ package com.on.Alg.ANN;
  */
 public interface ActivationFunction {
     
-    public float doFunction(int[] vector, int[] w);
+    public float doFunction(int[] vector, float[] w);
     
 }

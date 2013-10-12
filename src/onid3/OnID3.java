@@ -4,6 +4,7 @@
  */
 package onid3;
 
+import com.on.Alg.ANNClassifier;
 import com.on.Alg.ID3;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,6 +23,9 @@ public class OnID3 {
         
         
         Parser _parser = new Parser();
+        Dataset _dataset = _parser.loadDataset("and.arff");
+        ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH);
+        ann.GenerateModel();
         /* ModelData 1 */
         /*Dataset _dataset = _parser.loadDataset("data1.arff");
         _dataset.PrintDataset();
@@ -56,7 +60,7 @@ public class OnID3 {
         System.out.println(id3_2.accuration(_dataset3.getData())* 100 + "%");
         
         _dataset3.PrintDataset();
-        */
+        
         System.out.println("Monk Problem 1");
         System.out.println("=================");
         System.out.println("Model Tree");
@@ -97,6 +101,6 @@ public class OnID3 {
         Dataset _datatest3 = _parser.loadDataset("monks-3.test");
         System.out.println("");
         System.out.println("Accuracy Test : " + monkModel3.accuration(_datatest3.getData())*100 + "%");
-        
+        */
     }
 }
