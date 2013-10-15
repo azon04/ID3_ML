@@ -5,6 +5,7 @@
 package onid3;
 
 import com.on.Alg.ANNClassifier;
+import com.on.Alg.ANNMultiLayer;
 import com.on.Alg.ID3;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,8 +25,10 @@ public class OnID3 {
         
         Parser _parser = new Parser();
         Dataset _dataset = _parser.loadDataset("and.arff");
-        ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
+        //ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
+        ANNMultiLayer ann = new ANNMultiLayer(_dataset, new int[] {2,1});
         ann.GenerateModel();
+        //ann.GenerateModelBySplit(66);
         /* ModelData 1 */
         /*Dataset _dataset = _parser.loadDataset("data1.arff");
         _dataset.PrintDataset();

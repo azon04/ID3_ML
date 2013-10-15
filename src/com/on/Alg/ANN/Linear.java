@@ -18,5 +18,14 @@ public class Linear implements ActivationFunction{
         }
         return res;
     }
+
+    @Override
+    public float doFunction(float[] vector, float[] w) {
+        float res = 0.0f;
+        for(int i=0; i< vector.length; i++) {
+            res += (vector[i]*w[i]);
+        }
+        return res;
+    }
     
 }

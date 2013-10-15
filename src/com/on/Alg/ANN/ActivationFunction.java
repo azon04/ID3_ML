@@ -11,5 +11,5 @@ package com.on.Alg.ANN;
 public interface ActivationFunction {
     
     public float doFunction(int[] vector, float[] w);
-    
+    public float doFunction(float[] vector, float[] w);
 }

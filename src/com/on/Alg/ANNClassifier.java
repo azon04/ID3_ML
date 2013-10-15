@@ -16,7 +16,6 @@ import onid3.Dataset;
 public class ANNClassifier implements Classifier {
 
     public enum Mode {
-
         INCREMENTAL, BATCH
     };
     private Mode mode = Mode.INCREMENTAL;
@@ -166,11 +165,115 @@ public class ANNClassifier implements Classifier {
                 System.out.println("MSE = " + MSE);
             }
         }
+        System.out.println("Accuracy : " + (accuration(dataset.getData())* 100)+"%");
     }
 
     @Override
     public void GenerateModelBySplit(int splitPercent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<ArrayList<Integer>> trainSet;
+        ArrayList<ArrayList<Integer>> testSet;
+        int trainSize = this.dataset.getData().size() * splitPercent / 100;
+
+        trainSet = new ArrayList<>(this.dataset.getData().subList(0, trainSize));
+        testSet = new ArrayList<>(this.dataset.getData().subList(trainSize+1,  this.dataset.getData().size()));
+        
+        if (mode == Mode.BATCH) {
+            int iter = 0;
+            for (int i = 0; i < dw.length; i++) {
+                dw[i] = 0.0f;
+            }
+            for (int i = 0; i < weight.length; i++) {
+                weight[i] = 0.5f;
+            }
+            while (iter < maxIteration && MSE > minMSE) {
+                for (int i = 0; i < weight.length; i++) {
+                    weight[i] += dw[i];
+                }
+
+                for (int i = 0; i < dw.length; i++) {
+                    dw[i] = 0.0f;
+                }
+
+
+                for (int i = 0; i < trainSet.size(); i++) {
+
+                    int[] values = new int[trainSet.get(i).size()];
+                    values[0] = 1;
+                    int idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            values[idx++] = trainSet.get(i).get(j - 1).intValue() == 0 ? -1 : 1;
+                        }
+                    }
+
+                    float o = function.doFunction(values, weight);
+                    float t = trainSet.get(i).get(classIdx).intValue() == 0 ? -1 : 1;
+
+                    // Bias
+                    dw[0] = dw[0] + learningRate * (t - o) * 1;
+                    idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            dw[idx] = dw[idx] + learningRate * (t - o) * (trainSet.get(i).get(j - 1).intValue() == 0 ? -1 : 1);
+                            idx++;
+                        }
+                    }
+                    
+                }
+                iter++;
+                calculateMSE();
+                for (int i = 0; i < weight.length; i++) {
+                    System.out.print(weight[i] + ",");
+                }
+                
+                System.out.println("MSE = " + MSE);
+            }
+        } else if(mode == Mode.INCREMENTAL) {
+            int iter = 0;
+            for (int i = 0; i < dw.length; i++) {
+                dw[i] = 0.0f;
+            }
+            for (int i = 0; i < weight.length; i++) {
+                weight[i] = 0.5f;
+            }
+            while (iter < maxIteration && MSE > minMSE) {
+                for (int i = 0; i < trainSet.size(); i++) {
+                    for (int j = 0; j < weight.length; j++) {
+                        weight[j] += dw[j];
+                    }
+                    int[] values = new int[trainSet.get(i).size()];
+                    values[0] = 1;
+                    int idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            values[idx++] = trainSet.get(i).get(j - 1).intValue() == 0 ? -1 : 1;
+                        }
+                    }
+
+                    float o = function.doFunction(values, weight);
+                    float t = trainSet.get(i).get(classIdx).intValue() == 0 ? -1 : 1;
+
+                    // Bias
+                    dw[0] = learningRate * (t - o) * 1;
+                    idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            dw[idx] = learningRate * (t - o) * (trainSet.get(i).get(j - 1).intValue() == 0 ? -1 : 1);
+                            idx++;
+                        }
+                    }
+                    for (int j = 0; j < weight.length; j++) {
+                        System.out.print(weight[j] + ",");
+                    }
+                    System.out.println("");
+                }
+                iter++;
+                calculateMSE();
+                
+                System.out.println("MSE = " + MSE);
+            }
+        }
+        System.out.println("Accuracy : " + (accuration(testSet)* 100)+"%");
     }
 
     @Override
@@ -180,12 +283,44 @@ public class ANNClassifier implements Classifier {
 
     @Override
     public void Classify(Dataset trainData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         for(int i=0; i<trainData.getData().size();i++) {
+             int[] values = new int[trainData.getData().get(i).size()];
+            values[0] = 1;
+            int idx = 1;
+            for (int j = 1; j <= values.length; j++) {
+                if ((j - 1) != classIdx) {
+                    values[idx++] = trainData.getData().get(i).get(j - 1).intValue() == 0 ? -1 : 1;
+                }
+            }
+
+            float o = function.doFunction(values, weight);
+            int output = (int) Math.round(o);
+            output = output == -1 ? 0 : 1;
+            trainData.getRecord(i).add(classIdx, output);
+         }
     }
 
     @Override
     public float accuration(ArrayList<ArrayList<Integer>> data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int countSame = 0;
+        for(int i=0; i<data.size();i++) {
+             int[] values = new int[data.get(i).size()];
+            values[0] = 1;
+            int idx = 1;
+            for (int j = 1; j <= values.length; j++) {
+                if ((j - 1) != classIdx) {
+                    values[idx++] = data.get(i).get(j - 1).intValue() == 0 ? -1 : 1;
+                }
+            }
+
+            float o = function.doFunction(values, weight);
+            int output = (int) Math.round(o);
+            output = output == -1 ? 0 : 1;
+            
+            if(output == data.get(i).get(classIdx).intValue())
+                countSame++;
+         }
+        return countSame/(float)data.size();
     }
 
     @Override
