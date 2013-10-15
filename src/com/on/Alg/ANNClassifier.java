@@ -121,8 +121,50 @@ public class ANNClassifier implements Classifier {
                 
                 System.out.println("MSE = " + MSE);
             }
+        } else if(mode == Mode.INCREMENTAL) {
+            int iter = 0;
+            for (int i = 0; i < dw.length; i++) {
+                dw[i] = 0.0f;
+            }
+            for (int i = 0; i < weight.length; i++) {
+                weight[i] = 0.5f;
+            }
+            while (iter < maxIteration && MSE > minMSE) {
+                for (int i = 0; i < dataset.getData().size(); i++) {
+                    for (int j = 0; j < weight.length; j++) {
+                        weight[j] += dw[j];
+                    }
+                    int[] values = new int[dataset.getData().get(i).size()];
+                    values[0] = 1;
+                    int idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            values[idx++] = dataset.getData().get(i).get(j - 1).intValue() == 0 ? -1 : 1;
+                        }
+                    }
 
+                    float o = function.doFunction(values, weight);
+                    float t = dataset.getData().get(i).get(classIdx).intValue() == 0 ? -1 : 1;
 
+                    // Bias
+                    dw[0] = learningRate * (t - o) * 1;
+                    idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            dw[idx] = learningRate * (t - o) * (dataset.getData().get(i).get(j - 1).intValue() == 0 ? -1 : 1);
+                            idx++;
+                        }
+                    }
+                    for (int j = 0; j < weight.length; j++) {
+                        System.out.print(weight[j] + ",");
+                    }
+                    System.out.println("");
+                }
+                iter++;
+                calculateMSE();
+                
+                System.out.println("MSE = " + MSE);
+            }
         }
     }
 

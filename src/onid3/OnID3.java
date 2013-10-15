@@ -24,7 +24,7 @@ public class OnID3 {
         
         Parser _parser = new Parser();
         Dataset _dataset = _parser.loadDataset("and.arff");
-        ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH);
+        ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
         ann.GenerateModel();
         /* ModelData 1 */
         /*Dataset _dataset = _parser.loadDataset("data1.arff");
