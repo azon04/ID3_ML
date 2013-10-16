@@ -46,6 +46,23 @@ public class ANNClassifier implements Classifier {
         function = new Linear();
     }
 
+    public ANNClassifier(Dataset _dataset, ActivationFunction function) {
+        this.dataset = _dataset;
+        weight = new float[this.dataset.getAttributes().size()];
+        dw = new float[this.dataset.getAttributes().size()];
+        classIdx = dataset.getAttributes().size() - 1;
+        this.function = function;
+    }
+
+    public ANNClassifier(Dataset _dataset, Mode mode, ActivationFunction function) {
+        this.dataset = _dataset;
+        weight = new float[this.dataset.getAttributes().size()];
+        this.mode = mode;
+        dw = new float[this.dataset.getAttributes().size()];
+        classIdx = dataset.getAttributes().size() - 1;
+        this.function = function;
+    }
+    
     private void calculateMSE() {
         float sum = 0.0f;
         for (int i = 0; i < dataset.getData().size(); i++) {
@@ -78,6 +95,7 @@ public class ANNClassifier implements Classifier {
                 weight[i] = 0.5f;
             }
             while (iter < maxIteration && MSE > minMSE) {
+                System.out.println("Iterasi " + (iter+1));
                 for (int i = 0; i < weight.length; i++) {
                     weight[i] += dw[i];
                 }
@@ -129,6 +147,7 @@ public class ANNClassifier implements Classifier {
                 weight[i] = 0.5f;
             }
             while (iter < maxIteration && MSE > minMSE) {
+                System.out.println("Iterasi " + (iter+1));
                 for (int i = 0; i < dataset.getData().size(); i++) {
                     for (int j = 0; j < weight.length; j++) {
                         weight[j] += dw[j];

@@ -4,6 +4,9 @@
  */
 package onid3;
 
+import com.on.Alg.ANN.Sig;
+import com.on.Alg.ANN.Sign;
+import com.on.Alg.ANN.Step;
 import com.on.Alg.ANNClassifier;
 import com.on.Alg.ANNMultiLayer;
 import com.on.Alg.ID3;
@@ -24,10 +27,55 @@ public class OnID3 {
         
         
         Parser _parser = new Parser();
-        Dataset _dataset = _parser.loadDataset("xnor.arff");
-        //ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
-        //ANNMultiLayer ann = new ANNMultiLayer(_dataset, new int[] {2,1});
+        Dataset _dataset = _parser.loadDataset("and.arff");
+        
+        System.out.println("INCREMENTAL");
+        System.out.println("ANN for AND dataset with Linear Function : ");
+        ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
         ann.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Sigmoid Function : ");
+        ANNClassifier ann2 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Sig());
+        ann2.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Sign Function : ");
+        ANNClassifier ann3 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Sign());
+        ann3.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Step Function : ");
+        ANNClassifier ann4 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Step(0.0f));
+        ann4.GenerateModel();
+        System.out.println("");
+        
+        System.out.println("BATCH");
+        System.out.println("ANN for AND dataset with Linear Function : ");
+        ANNClassifier ann5 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH);
+        ann5.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Sigmoid Function : ");
+        ANNClassifier ann6 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Sig());
+        ann6.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Sign Function : ");
+        ANNClassifier ann7 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Sign());
+        ann7.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("ANN for AND dataset with Step Function : ");
+        ANNClassifier ann8 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Step(0.0f));
+        ann8.GenerateModel();
+        System.out.println("");
+        
+        System.out.println("ANN Multilayer with Backpropagation Algorithm");
+        Dataset xnor_dataset = _parser.loadDataset("xnor.arff");
+        ANNMultiLayer annMultiLayer = new ANNMultiLayer(xnor_dataset, new int[]{2,1}, new Sig());
+        annMultiLayer.GenerateModel();
+        
         //ann.GenerateModelBySplit(66);
         /* ModelData 1 */
         /*Dataset _dataset = _parser.loadDataset("data1.arff");

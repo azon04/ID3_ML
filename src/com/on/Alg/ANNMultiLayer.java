@@ -41,6 +41,24 @@ public class ANNMultiLayer implements Classifier {
         this.dataset = _dataset;
     }
     
+    
+     public ANNMultiLayer(Dataset _dataset, int[] selsConfiguration, ActivationFunction function) {
+        w = new float[selsConfiguration.length][][];
+        w[0] = new float[selsConfiguration[0]][];
+        for(int i=0; i<w[0].length; i++) {
+            w[0][i] = new float[_dataset.getAttributes().size()];
+        }
+        for(int i=1; i<selsConfiguration.length; i++) {
+            for(int j=0; j<selsConfiguration[i]; j++) {
+                w[i] = new float[selsConfiguration[i]][w[i-1].length+1];
+            }
+        }
+        
+        this.function = function;
+        classIdx = _dataset.getData().size() - 2;
+        this.dataset = _dataset;
+    }
+     
     private void calculateMSE() {
         float sum = 0.0f;
         for (int i = 0; i < dataset.getData().size(); i++) {
