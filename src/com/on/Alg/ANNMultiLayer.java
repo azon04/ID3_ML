@@ -24,6 +24,9 @@ public class ANNMultiLayer implements Classifier {
     private float MSE = 1000.0f;
     private Dataset dataset;
     
+    enum Mode {INCREMENTAL, BATCH};
+    Mode mode = Mode.INCREMENTAL;
+    
     public ANNMultiLayer(Dataset _dataset, int[] selsConfiguration) {
         w = new float[selsConfiguration.length][][];
         w[0] = new float[selsConfiguration[0]][];
@@ -37,10 +40,27 @@ public class ANNMultiLayer implements Classifier {
         }
         
         function = new Linear();
-        classIdx = _dataset.getData().size() - 2;
+        classIdx = _dataset.getAttributes().size()-1;
         this.dataset = _dataset;
     }
     
+    public ANNMultiLayer(Dataset _dataset,Mode mode, int[] selsConfiguration) {
+        w = new float[selsConfiguration.length][][];
+        w[0] = new float[selsConfiguration[0]][];
+        for(int i=0; i<w[0].length; i++) {
+            w[0][i] = new float[_dataset.getAttributes().size()];
+        }
+        for(int i=1; i<selsConfiguration.length; i++) {
+            for(int j=0; j<selsConfiguration[i]; j++) {
+                w[i] = new float[selsConfiguration[i]][w[i-1].length+1];
+            }
+        }
+        
+        function = new Linear();
+        classIdx = _dataset.getAttributes().size()-1;
+        this.dataset = _dataset;
+        this.mode = mode;
+    }
     
      public ANNMultiLayer(Dataset _dataset, int[] selsConfiguration, ActivationFunction function) {
         w = new float[selsConfiguration.length][][];
@@ -55,7 +75,7 @@ public class ANNMultiLayer implements Classifier {
         }
         
         this.function = function;
-        classIdx = _dataset.getData().size() - 2;
+        classIdx = _dataset.getAttributes().size()-1;
         this.dataset = _dataset;
     }
      
@@ -112,81 +132,168 @@ public class ANNMultiLayer implements Classifier {
                     }
                 }
             }
-        
-        while(iter < maxIteration && MSE > minMSE) {
-            System.out.println("Iterasi : " + (iter+1));
-            for (int i = 0; i < dataset.getData().size(); i++) {
-                float[][] output = new float[w.length][];
-                for(int j=0; j<output.length; j++) {
-                    output[j] = new float[w[j].length];
-                } 
+        if(mode == Mode.INCREMENTAL) {
+            while(iter < maxIteration && MSE > minMSE) {
+                System.out.println("Iterasi : " + (iter+1));
+                for (int i = 0; i < dataset.getData().size(); i++) {
+                    float[][] output = new float[w.length][];
+                    for(int j=0; j<output.length; j++) {
+                        output[j] = new float[w[j].length];
+                    } 
 
-                int[] values = new int[dataset.getData().get(i).size()];
-                values[0] = 1;
-                int idx = 1;
-                for (int j = 1; j <= values.length; j++) {
-                    if ((j - 1) != classIdx) {
-                        values[idx++] = dataset.getData().get(i).get(j - 1).intValue();
-                     }
-                }
-                for(int j=0; j<w[0].length; j++) {
-                    output[0][j] = function.doFunction(values, w[0][j]);
-                }
+                    int[] values = new int[dataset.getData().get(i).size()];
+                    values[0] = 1;
+                    int idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            values[idx++] = dataset.getData().get(i).get(j - 1).intValue();
+                         }
+                    }
+                    for(int j=0; j<w[0].length; j++) {
+                        output[0][j] = function.doFunction(values, w[0][j]);
+                    }
 
-                for(int j=1; j<w.length; j++) {
-                    for(int k = 0; k<w[j].length; k++) {
-                        float[] vector = new float[output[j-1].length+1];
-                        vector[0] = 1;
-                        for(int iter1 = 1; iter1 <output[j-1].length+1; iter1++)
-                            vector[iter1] = output[j-1][iter1-1];
-                        output[j][k] = function.doFunction(vector, w[j][k]);
-                    }
-                }
-
-                float t = dataset.getData().get(i).get(classIdx).intValue();
-                
-                for(int j=0; j < w[w.length-1].length; j++) {
-                    delta[w.length-1][j] = output[w.length-1][j]* (1-output[w.length-1][j]) * (t - output[w.length-1][j]);
-                }
-                
-                for(int j=w.length-1; j >= 0; j--) {
-                    for(int k=0; k<w[j].length-1; k++) {
-                        float sum = 0;
-                        for(int l=0; l<w[j+1].length; l++) {
-                            sum += w[j+1][l][k+1]*delta[j+1][l];
-                        }
-                        delta[j][k] = output[j][k]*(1-output[j][k])*sum;
-                    }
-                }
-                
-                for(int iter1 = 0; iter1 < w[0].length; iter1++) {
-                    w[0][iter1][0] = w[0][iter1][0] + learningRate*delta[0][iter1]*1;
-                    for(int iter2=1; iter2<w[0][iter1].length; iter2++) {
-                        w[0][iter1][iter2] = w[0][iter1][iter2] + learningRate*delta[0][iter1]*values[iter2];
-                    }
-                }
-                
-                for(int iter0 = 1; iter0<w.length; iter0++) {
-                    for(int iter1 = 0; iter1 < w[iter0].length; iter1++) {
-                        w[iter0][iter1][0] = w[iter0][iter1][0] + learningRate*delta[0][iter1]*1;
-                        for(int iter2=1; iter2<w[iter0][iter1].length; iter2++) {
-                            w[iter0][iter1][iter2] = w[iter0][iter1][iter2] + learningRate*delta[0][iter1]*output[iter0-1][iter2-1];
+                    for(int j=1; j<w.length; j++) {
+                        for(int k = 0; k<w[j].length; k++) {
+                            float[] vector = new float[output[j-1].length+1];
+                            vector[0] = 1;
+                            for(int iter1 = 1; iter1 <output[j-1].length+1; iter1++)
+                                vector[iter1] = output[j-1][iter1-1];
+                            output[j][k] = function.doFunction(vector, w[j][k]);
                         }
                     }
+
+                    float t = dataset.getData().get(i).get(classIdx).intValue();
+
+                    for(int j=0; j < w[w.length-1].length; j++) {
+                        delta[w.length-1][j] = output[w.length-1][j]* (1-output[w.length-1][j]) * (t - output[w.length-1][j]);
+                    }
+
+                    for(int j=w.length-1; j >= 0; j--) {
+                        for(int k=0; k<w[j].length-1; k++) {
+                            float sum = 0;
+                            for(int l=0; l<w[j+1].length; l++) {
+                                sum += w[j+1][l][k+1]*delta[j+1][l];
+                            }
+                            delta[j][k] = output[j][k]*(1-output[j][k])*sum;
+                        }
+                    }
+
+                    for(int iter1 = 0; iter1 < w[0].length; iter1++) {
+                        w[0][iter1][0] = w[0][iter1][0] + learningRate*delta[0][iter1]*1;
+                        for(int iter2=1; iter2<w[0][iter1].length; iter2++) {
+                            w[0][iter1][iter2] = w[0][iter1][iter2] + learningRate*delta[0][iter1]*values[iter2];
+                        }
+                    }
+
+                    for(int iter0 = 1; iter0<w.length; iter0++) {
+                        for(int iter1 = 0; iter1 < w[iter0].length; iter1++) {
+                            w[iter0][iter1][0] = w[iter0][iter1][0] + learningRate*delta[0][iter1]*1;
+                            for(int iter2=1; iter2<w[iter0][iter1].length; iter2++) {
+                                w[iter0][iter1][iter2] = w[iter0][iter1][iter2] + learningRate*delta[0][iter1]*output[iter0-1][iter2-1];
+                            }
+                        }
+                    }
+
+                    for(int j=0; j<values.length; j++) {
+                        System.out.print(values[j]+"\t|");
+                    }
+                    for(int it=0; it<w.length; it++) {
+                        for(int j=0; j<w[it].length; j++) {
+                            System.out.print("sel<"+(it+1)+","+(j+1)+">\t:");
+                            for(int k=0; k<w[it][j].length; k++) {
+                                System.out.print("w<"+(j+1)+","+(k+1)+">="+w[it][j][k]+"\t|");
+                            }
+                        }
+                    }
+
+                    System.out.println("");
                 }
-                
+                calculateMSE();
+                iter++;
+                System.out.println("MSE =" + MSE);
             }
-            calculateMSE();
-            iter++;
-            
-            for(int i=0; i<w.length; i++) {
-                for(int j=0; j<w[i].length; j++) {
-                    System.out.print("sel<"+(i+1)+","+(j+1)+">:");
-                    for(int k=0; k<w[i][j].length; k++) {
-                        System.out.print("w<"+(j+1)+","+(k+1)+">="+w[i][j][k]+"|");
+            }
+            else if(mode == Mode.BATCH) {
+                while(iter < maxIteration && MSE > minMSE) {
+                System.out.println("Iterasi : " + (iter+1));
+                for (int i = 0; i < dataset.getData().size(); i++) {
+                    float[][] output = new float[w.length][];
+                    for(int j=0; j<output.length; j++) {
+                        output[j] = new float[w[j].length];
+                    } 
+
+                    int[] values = new int[dataset.getData().get(i).size()];
+                    values[0] = 1;
+                    int idx = 1;
+                    for (int j = 1; j <= values.length; j++) {
+                        if ((j - 1) != classIdx) {
+                            values[idx++] = dataset.getData().get(i).get(j - 1).intValue();
+                         }
                     }
-                    System.out.println("MSE =" + MSE);
+                    for(int j=0; j<w[0].length; j++) {
+                        output[0][j] = function.doFunction(values, w[0][j]);
+                    }
+
+                    for(int j=1; j<w.length; j++) {
+                        for(int k = 0; k<w[j].length; k++) {
+                            float[] vector = new float[output[j-1].length+1];
+                            vector[0] = 1;
+                            for(int iter1 = 1; iter1 <output[j-1].length+1; iter1++)
+                                vector[iter1] = output[j-1][iter1-1];
+                            output[j][k] = function.doFunction(vector, w[j][k]);
+                        }
+                    }
+
+                    float t = dataset.getData().get(i).get(classIdx).intValue();
+
+                    for(int j=0; j < w[w.length-1].length; j++) {
+                        delta[w.length-1][j] = output[w.length-1][j]* (1-output[w.length-1][j]) * (t - output[w.length-1][j]);
+                    }
+
+                    for(int j=w.length-1; j >= 0; j--) {
+                        for(int k=0; k<w[j].length-1; k++) {
+                            float sum = 0;
+                            for(int l=0; l<w[j+1].length; l++) {
+                                sum += w[j+1][l][k+1]*delta[j+1][l];
+                            }
+                            delta[j][k] = output[j][k]*(1-output[j][k])*sum;
+                        }
+                    }
+
+                    for(int iter1 = 0; iter1 < w[0].length; iter1++) {
+                        w[0][iter1][0] = w[0][iter1][0] + learningRate*delta[0][iter1]*1;
+                        for(int iter2=1; iter2<w[0][iter1].length; iter2++) {
+                            w[0][iter1][iter2] = w[0][iter1][iter2] + learningRate*delta[0][iter1]*values[iter2];
+                        }
+                    }
+
+                    for(int iter0 = 1; iter0<w.length; iter0++) {
+                        for(int iter1 = 0; iter1 < w[iter0].length; iter1++) {
+                            w[iter0][iter1][0] = w[iter0][iter1][0] + learningRate*delta[0][iter1]*1;
+                            for(int iter2=1; iter2<w[iter0][iter1].length; iter2++) {
+                                w[iter0][iter1][iter2] = w[iter0][iter1][iter2] + learningRate*delta[0][iter1]*output[iter0-1][iter2-1];
+                            }
+                        }
+                    }
+
+                    for(int j=0; j<values.length; j++) {
+                        System.out.print(values[j]+"\t|");
+                    }
+                    for(int it=0; it<w.length; it++) {
+                        for(int j=0; j<w[it].length; j++) {
+                            System.out.print("sel<"+(it+1)+","+(j+1)+">\t:");
+                            for(int k=0; k<w[it][j].length; k++) {
+                                System.out.print("w<"+(j+1)+","+(k+1)+">="+w[it][j][k]+"\t|");
+                            }
+                        }
+                    }
+
+                    System.out.println("");
                 }
+                calculateMSE();
+                iter++;
+                System.out.println("MSE =" + MSE);
             }
         }
         
@@ -385,5 +492,14 @@ public class ANNMultiLayer implements Classifier {
     public void setClsIdx(int idx) {
         classIdx=idx; 
     }
+
+    public void setMinMSE(float minMSE) {
+        this.minMSE = minMSE;
+    }
+
+    public void setMaxIteration(int maxIteration) {
+        this.maxIteration = maxIteration;
+    }
+    
     
 }

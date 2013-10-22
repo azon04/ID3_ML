@@ -4,7 +4,7 @@
 @attribute temprature {hot,mild,cool}
 @attribute humidity {high,normal}
 @attribute wind {strong,weak}
-@attribute playtennis {yes,no}
+@attribute playtennis {no,yes}
 
 @data
 sunny,hot,high,weak,no

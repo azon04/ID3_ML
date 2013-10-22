@@ -28,53 +28,103 @@ public class OnID3 {
         
         Parser _parser = new Parser();
         Dataset _dataset = _parser.loadDataset("and.arff");
-        
+        System.out.println("(A)");
         System.out.println("INCREMENTAL");
         System.out.println("ANN for AND dataset with Linear Function : ");
         ANNClassifier ann = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL);
+        ann.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Sigmoid Function : ");
         ANNClassifier ann2 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Sig());
+        ann2.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann2.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Sign Function : ");
         ANNClassifier ann3 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Sign());
+        ann3.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann3.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Step Function : ");
         ANNClassifier ann4 = new ANNClassifier(_dataset, ANNClassifier.Mode.INCREMENTAL, new Step(0.0f));
+        ann4.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann4.GenerateModel();
         System.out.println("");
         
         System.out.println("BATCH");
         System.out.println("ANN for AND dataset with Linear Function : ");
         ANNClassifier ann5 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH);
+        ann5.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann5.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Sigmoid Function : ");
         ANNClassifier ann6 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Sig());
+        ann6.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann6.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Sign Function : ");
         ANNClassifier ann7 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Sign());
+        ann7.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann7.GenerateModel();
         
         System.out.println("");
         System.out.println("ANN for AND dataset with Step Function : ");
         ANNClassifier ann8 = new ANNClassifier(_dataset, ANNClassifier.Mode.BATCH, new Step(0.0f));
+        ann8.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f, 1.0f});
         ann8.GenerateModel();
         System.out.println("");
         
-        System.out.println("ANN Multilayer with Backpropagation Algorithm");
+        System.out.println("(B)");
         Dataset xnor_dataset = _parser.loadDataset("xnor.arff");
+        System.out.println("ANN for XNOR Incremental, Sigmoid");
+        ANNClassifier ann9 = new ANNClassifier(xnor_dataset, ANNClassifier.Mode.INCREMENTAL, new Sig());
+        ann9.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f,1.0f});
+        ann9.setMinMSE(0.001f);
+        ann9.GenerateModel();
+        
+        System.out.println("ANN for XNOR Batch, Sigmoid");
+        ANNClassifier ann10 = new ANNClassifier(xnor_dataset, ANNClassifier.Mode.BATCH, new Sig());
+        ann10.setReps(ANNClassifier.Rep.MODIF, new float[]{-1.0f,1.0f});
+        ann10.setMinMSE(0.001f);
+        ann10.GenerateModel();
+        
+        System.out.println("");
+        
+        System.out.println("(C)");
+        System.out.println("ANN Multilayer XNOR with Backpropagation Algorithm");
         ANNMultiLayer annMultiLayer = new ANNMultiLayer(xnor_dataset, new int[]{2,1}, new Sig());
         annMultiLayer.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("(D)");
+        System.out.println("Playtennis Step Incremental");
+        Dataset playtennis = _parser.loadDataset("data1.arff");
+        ANNClassifier ann11 = new ANNClassifier(playtennis, new Step(0.0f));
+        ann11.GenerateModel();
+        
+        System.out.println("");
+        System.out.println("(E)");
+        System.out.println("Playtennis Biner Step Incremental");
+        Dataset playtennis_biner = _parser.loadDataset("data1_biner.arff");
+        ANNClassifier ann12 = new ANNClassifier(playtennis_biner, ANNClassifier.Mode.INCREMENTAL, new Step(0.5f));
+        ann12.GenerateModel();
+        
+        System.out.println("(F)");
+        System.out.println("Playtennis Biner Step Batch");
+        ANNClassifier ann13 = new ANNClassifier(playtennis_biner, ANNClassifier.Mode.BATCH, new Step(0.0f));
+        ann13.GenerateModel();
+        
+        System.out.println("(G)");
+        System.out.println("Playtennis Biner Step Batch Backpropagation");
+        ANNMultiLayer ann14 = new ANNMultiLayer(playtennis_biner, new int[]{5,1}, new Step(0.0f));
+        ann14.setMinMSE(0.001f);
+        ann14.setMaxIteration(3);
+        ann14.GenerateModel();
         
         //ann.GenerateModelBySplit(66);
         /* ModelData 1 */
