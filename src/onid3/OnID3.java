@@ -27,7 +27,23 @@ public class OnID3 {
         
         
         Parser _parser = new Parser();
-        Dataset _dataset = _parser.loadDataset("and.arff");
+        Dataset trainset = _parser.loadDataset("trainingUTS.arff");
+        Dataset testset = _parser.loadDataset("test.arff");
+        ID3 id3 = new ID3(trainset);
+        System.out.println("ID3");
+        id3.GenerateModel();
+        System.out.println("Accuracy Test set : " + id3.accuration(trainset.getData()));
+        
+        System.out.println("");
+        System.out.println("ANN");
+        ANNClassifier ann = new ANNClassifier(trainset, ANNClassifier.Mode.INCREMENTAL);
+        ann.setLearningRate(0.25f);
+        ann.setMaxIteration(100);
+        ann.GenerateModel();
+        System.out.println("Accuracy Test set : " + ann.accuration(trainset.getData()));
+        
+        
+        /*Dataset _dataset = _parser.loadDataset("and.arff");
         System.out.println("(A)");
         System.out.println("INCREMENTAL");
         System.out.println("ANN for AND dataset with Linear Function : ");
@@ -125,7 +141,7 @@ public class OnID3 {
         ann14.setMinMSE(0.001f);
         ann14.setMaxIteration(3);
         ann14.GenerateModel();
-        
+        */
         //ann.GenerateModelBySplit(66);
         /* ModelData 1 */
         /*Dataset _dataset = _parser.loadDataset("data1.arff");

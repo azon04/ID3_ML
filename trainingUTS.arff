@@ -1,0 +1,38 @@
+@relation ''
+
+@attribute target_type {diskrit,kontinu}
+@attribute n_out {1,n}
+@attribute inst_rep {diskrit,kontinu,campuran}
+@attribute noise {true,false}
+@attribute missing_value {true,false}
+@attribute n_instance {sedikit,banyak}
+@attribute learning_time_long {true,false}
+@attribute classify_time_short {true,false}
+@attribute is_understandable {true,false}
+@attribute algorithm {find_s,ce,id3,ann,svm,unknown}
+
+@data
+diskrit,n,campuran,true,false,sedikit,true,true,false,ann
+kontinu,n,campuran,true,false,sedikit,true,true,false,ann
+diskrit,1,campuran,true,false,sedikit,true,true,false,ann
+kontinu,1,campuran,true,false,sedikit,true,true,false,ann
+diskrit,1,diskrit,true,true,sedikit,false,true,true,id3
+diskrit,1,diskrit,true,true,banyak,false,true,true,id3
+diskrit,1,diskrit,true,true,banyak,true,true,true,id3
+diskrit,1,diskrit,true,true,sedikit,false,false,true,id3
+diskrit,1,diskrit,false,false,banyak,true,true,true,svm
+diskrit,1,kontinu,false,false,banyak,false,true,true,svm
+diskrit,1,kontinu,false,false,banyak,true,true,true,svm
+diskrit,1,campuran,false,false,banyak,false,true,true,svm
+diskrit,1,diskrit,false,true,sedikit,true,true,true,find_s
+diskrit,1,diskrit,false,false,banyak,false,true,true,find_s
+diskrit,1,diskrit,false,true,banyak,true,true,true,find_s
+diskrit,1,diskrit,false,true,banyak,true,true,true,find_s
+diskrit,n,diskrit,false,true,sedikit,true,true,true,ce
+diskrit,n,diskrit,false,true,sedikit,false,true,true,ce
+diskrit,n,diskrit,false,true,banyak,true,true,true,ce
+diskrit,n,diskrit,false,false,sedikit,true,true,true,ce
+kontinu,1,diskrit,false,false,banyak,true,false,true,unknown
+kontinu,n,diskrit,true,false,banyak,true,true,true,unknown
+diskrit,n,kontinu,true,true,sedikit,false,true,true,unknown
+kontinu,n,kontinu,false,false,sedikit,false,false,true,unknown

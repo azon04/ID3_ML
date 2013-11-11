@@ -242,8 +242,8 @@ public class ANNClassifier implements Classifier {
                             } else {
                                 //t 
                             }
+                            dw[idx++] = learningRate * (t - o) * val;
                             
-                            dw[idx] = learningRate * (t - o) * val;
                         }
                     }
                     for (int j = 0; j < values.length; j++) {
@@ -477,4 +477,14 @@ public class ANNClassifier implements Classifier {
         this.reps = reps;
         this.repModif = repModif;
     }
+
+    public void setMaxIteration(int maxIteration) {
+        this.maxIteration = maxIteration;
+    }
+
+    public void setLearningRate(float learningRate) {
+        this.learningRate = learningRate;
+    }
+    
+    
 }

@@ -211,6 +211,7 @@ public class ID3 implements Classifier{
         
         float entropy = 0;
         for(int j=0; j<classValueCount.length; j++) {
+            if(classValueCount[j] == 0) continue;
             entropy += -classValueCount[j]/(float)data.size() * log2(classValueCount[j]/(float)data.size());
         }
         
@@ -248,10 +249,13 @@ public class ID3 implements Classifier{
     private float Gain(ArrayList<ArrayList<Integer>>  data, int attribute) {
         float gain;
         gain = Entropy(data);
+        //System.out.println("Start Entropy : " + Entropy(data));
         int numValue = dataset.getAttributes().get(attribute).getValues().size();
         for(int i=0; i<numValue; i++) {
+            //System.out.println("Entropy : " + Entropy(data, attribute, i));
             gain -= Entropy(data, attribute, i);
         }
+        
         return gain;
     }
 
