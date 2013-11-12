@@ -1,0 +1,40 @@
+@relation ''
+
+@attribute outlook {sunny,overcast,rain}
+@attribute temprature {hot,mild,cool}
+@attribute humidity {high,normal}
+@attribute wind {strong,weak}
+
+@data
+sunny,hot,normal,weak
+sunny,mild,high,strong
+sunny,mild,normal,weak
+sunny,cool,high,strong
+sunny,cool,high,weak
+sunny,cool,normal,strong
+sunny,cool,normal,weak
+overcast,hot,high,strong
+overcast,hot,high,weak
+overcast,hot,normal,strong
+overcast,hot,normal,weak
+overcast,mild,high,strong
+overcast,mild,high,weak
+overcast,mild,normal,strong
+overcast,mild,normal,weak
+overcast,cool,high,strong
+overcast,cool,high,weak
+overcast,cool,normal,weak
+rain,hot,high,strong
+rain,hot,high,weak
+rain,hot,normal,strong
+rain,hot,normal,weak
+rain,mild,high,strong
+rain,mild,high,weak
+rain,mild,normal,strong
+rain,mild,normal,weak
+rain,cool,high,strong
+rain,cool,high,weak
+rain,cool,normal,strong
+rain,cool,normal,weak
+rain,cool,high,strong
+rain,cool,high,weak

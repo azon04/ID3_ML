@@ -49,6 +49,8 @@ public class BisectingKMeans {
         ArrayList<Integer> wL = null,wR = null;
         
         do {
+            mL.getInstances().clear();
+            mR.getInstances().clear();
             if(wL != null) {
                 cL = wL;
                 cR = wR;
@@ -64,10 +66,18 @@ public class BisectingKMeans {
             }
             wL = calculateCentroid(mL.getInstances());
             wR = calculateCentroid(mR.getInstances());
-        } while(!same(wL,cL) || same(wR,cR));
+        } while(!same(wL,cL) || !same(wR,cR));
         
         result.add(mR);
         result.add(mL);
+    }
+    
+    private String centroidToString(ArrayList<Integer> centroid) {
+        String str = "";
+        for(int i =0; i <centroid.size(); i++) {
+            str = centroid.get(i).toString() + ",";
+        }
+        return str;
     }
     
     private float distance(ArrayList<Integer> data1, ArrayList<Integer> data2) {
@@ -87,6 +97,7 @@ public class BisectingKMeans {
         }
         return true;
     }
+    
     private ArrayList<Integer> minus(ArrayList<Integer> data1, ArrayList<Integer> data2) {
         ArrayList<Integer> result = new ArrayList<>();
         for(int i=0; i < data1.size(); i++) {
@@ -114,6 +125,36 @@ public class BisectingKMeans {
         }
         
         return result;
+    }
+    
+    public void printResult() {
+        for(int i=0; i< result.size(); i++) {
+           ArrayList<ArrayList<Integer>> instances = result.get(i).getInstances();
+           for(int iter =0; iter < instances.size(); iter++) {
+               for(int j =0; j < instances.get(iter).size(); j++) {
+                   System.out.print(dataset.getAttributes().get(j).getValues().get(instances.get(iter).get(j).intValue()) + ",");
+               }
+               System.out.println("C"+i);
+           }
+        }
+    }
+    
+    public float accuracy(Dataset answerDataset) {
+        ArrayList<ArrayList<Integer>> answers = answerDataset.getData();
+        int same = 0;
+        for(int i=0; i< answers.size(); i++) {
+            int a = answers.get(i).get(answers.get(i).size()-1);
+            int b = 0;
+            for(int j=0; j<result.size(); j++) {
+                if(result.get(j).instances.indexOf(dataset.getData().get(i))>= 0){
+                    b = j;
+                    break;
+                }
+            }
+            
+            if(a==b) same++;
+        }
+        return ((float) same) / answers.size();
     }
     
     private class Cluster {

@@ -10,6 +10,7 @@ import com.on.Alg.ANN.Step;
 import com.on.Alg.ANNClassifier;
 import com.on.Alg.ANNMultiLayer;
 import com.on.Alg.ID3;
+import com.on.clustering.BisectingKMeans;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -25,23 +26,30 @@ public class OnID3 {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         // TODO code application logic here
         
-        
         Parser _parser = new Parser();
-        Dataset trainset = _parser.loadDataset("trainingUTS.arff");
-        Dataset testset = _parser.loadDataset("test.arff");
-        ID3 id3 = new ID3(trainset);
-        System.out.println("ID3");
-        id3.GenerateModel();
-        System.out.println("Accuracy Test set : " + id3.accuration(trainset.getData()));
+        Dataset trainset = _parser.loadDataset("PlayTennis_Cluster.arff");
+        Dataset answerset = _parser.loadDataset("PlayTennis_Cluster_ans.arff");
+        BisectingKMeans bisectingKMeans = new BisectingKMeans(2, trainset);
+        bisectingKMeans.doCluster();
+        bisectingKMeans.printResult();
+        System.out.println("Accuracy : " + bisectingKMeans.accuracy(answerset)*100 + "%" );
         
-        System.out.println("");
-        System.out.println("ANN");
-        ANNClassifier ann = new ANNClassifier(trainset, ANNClassifier.Mode.INCREMENTAL);
-        ann.setLearningRate(0.25f);
-        ann.setMaxIteration(100);
-        ann.GenerateModel();
-        System.out.println("Accuracy Test set : " + ann.accuration(trainset.getData()));
-        
+//        Parser _parser = new Parser();
+//        Dataset trainset = _parser.loadDataset("trainingUTS.arff");
+//        Dataset testset = _parser.loadDataset("test.arff");
+//        ID3 id3 = new ID3(trainset);
+//        System.out.println("ID3");
+//        id3.GenerateModel();
+//        System.out.println("Accuracy Test set : " + id3.accuration(trainset.getData()));
+//        
+//        System.out.println("");
+//        System.out.println("ANN");
+//        ANNClassifier ann = new ANNClassifier(trainset, ANNClassifier.Mode.INCREMENTAL);
+//        ann.setLearningRate(0.25f);
+//        ann.setMaxIteration(100);
+//        ann.GenerateModel();
+//        System.out.println("Accuracy Test set : " + ann.accuration(trainset.getData()));
+//        
         
         /*Dataset _dataset = _parser.loadDataset("and.arff");
         System.out.println("(A)");

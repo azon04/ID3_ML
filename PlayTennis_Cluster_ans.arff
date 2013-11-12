@@ -1,0 +1,41 @@
+@relation ''
+
+@attribute outlook {sunny,overcast,rain}
+@attribute temprature {hot,mild,cool}
+@attribute humidity {high,normal}
+@attribute wind {strong,weak}
+@attribute playtennis {C0,C1}
+
+@data
+sunny,hot,normal,weak,C1
+sunny,mild,high,strong,C0
+sunny,mild,normal,weak,C1
+sunny,cool,high,strong,C0
+sunny,cool,high,weak,C0
+sunny,cool,normal,strong,C1
+sunny,cool,normal,weak,C1
+overcast,hot,high,strong,C1
+overcast,hot,high,weak,C1
+overcast,hot,normal,strong,C1
+overcast,hot,normal,weak,C1
+overcast,mild,high,strong,C1
+overcast,mild,high,weak,C1
+overcast,mild,normal,strong,C1
+overcast,mild,normal,weak,C1
+overcast,cool,high,strong,C1
+overcast,cool,high,weak,C1
+overcast,cool,normal,weak,C1
+rain,hot,high,strong,C0
+rain,hot,high,weak,C1
+rain,hot,normal,strong,C0
+rain,hot,normal,weak,C1
+rain,mild,high,strong,C0
+rain,mild,high,weak,C1
+rain,mild,normal,strong,C0
+rain,mild,normal,weak,C1
+rain,cool,high,strong,C0
+rain,cool,high,weak,C1
+rain,cool,normal,strong,C0
+rain,cool,normal,weak,C1
+rain,cool,high,strong,C0
+rain,cool,high,weak,C1
