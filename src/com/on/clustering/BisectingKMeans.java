@@ -47,7 +47,7 @@ public class BisectingKMeans {
         Cluster mL = new Cluster(),mR = new Cluster();
         
         ArrayList<Integer> wL = null,wR = null;
-        
+        int iter = 0;
         do {
             mL.getInstances().clear();
             mR.getInstances().clear();
@@ -66,7 +66,8 @@ public class BisectingKMeans {
             }
             wL = calculateCentroid(mL.getInstances());
             wR = calculateCentroid(mR.getInstances());
-        } while(!same(wL,cL) || !same(wR,cR));
+            iter++;
+        } while((!same(wL,cL) || !same(wR,cR)) && iter < 1000);
         
         result.add(mR);
         result.add(mL);
@@ -75,7 +76,7 @@ public class BisectingKMeans {
     private String centroidToString(ArrayList<Integer> centroid) {
         String str = "";
         for(int i =0; i <centroid.size(); i++) {
-            str = centroid.get(i).toString() + ",";
+            str += centroid.get(i).toString() + ",";
         }
         return str;
     }
@@ -132,7 +133,7 @@ public class BisectingKMeans {
            ArrayList<ArrayList<Integer>> instances = result.get(i).getInstances();
            for(int iter =0; iter < instances.size(); iter++) {
                for(int j =0; j < instances.get(iter).size(); j++) {
-                   System.out.print(dataset.getAttributes().get(j).getValues().get(instances.get(iter).get(j).intValue()) + ",");
+                   System.out.print(dataset.getAttributes().get(j).getValue(instances.get(iter).get(j).intValue()) + ",");
                }
                System.out.println("C"+i);
            }
