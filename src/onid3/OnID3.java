@@ -27,9 +27,9 @@ public class OnID3 {
         // TODO code application logic here
         
         Parser _parser = new Parser();
-        Dataset trainset = _parser.loadDataset("lelang_fix.arff");
+        Dataset trainset = _parser.loadDataset("pengawasan_1atr.arff");
         //Dataset answerset = _parser.loadDataset("PlayTennis_Cluster_ans.arff");
-        BisectingKMeans bisectingKMeans = new BisectingKMeans(2, trainset);
+        BisectingKMeans bisectingKMeans = new BisectingKMeans(7, trainset);
         bisectingKMeans.doCluster();
         bisectingKMeans.printResult();
         //System.out.println("Accuracy : " + bisectingKMeans.accuracy(answerset)*100 + "%" );

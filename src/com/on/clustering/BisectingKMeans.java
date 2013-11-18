@@ -40,6 +40,7 @@ public class BisectingKMeans {
     }
     
     private void bisecting(ArrayList<ArrayList<Integer>> data) {
+        if(data.size() <= 0) return;
         ArrayList<Integer> cL = data.get(0);
         ArrayList<Integer> w = calculateCentroid(data);
         ArrayList<Integer> cR = minus(w,minus(cL,w));
@@ -108,7 +109,8 @@ public class BisectingKMeans {
     }
     
     private ArrayList<Integer> calculateCentroid(ArrayList<ArrayList<Integer>> data) {
-        float[] tmp = new float[data.get(0).size()];
+        
+        float[] tmp = new float[dataset.getData().get(0).size()];
         for(int i=0; i < tmp.length; i++) {
             tmp[i] = 0.0f;
         }
@@ -137,6 +139,17 @@ public class BisectingKMeans {
                }
                System.out.println("C"+i);
            }
+        }
+        
+        for(int i=0; i< result.size(); i++) {
+           ArrayList<ArrayList<Integer>> instances = result.get(i).getInstances();
+           ArrayList<Integer> centroid = calculateCentroid(instances);
+            System.out.println("Cluster : " + i);
+            System.out.println("Number of instances : " + instances.size());
+           for(int j =0; j < centroid.size(); j++) {
+                   System.out.print(dataset.getAttributes().get(j).getValue(centroid.get(j).intValue()) + ",");
+            }
+          System.out.println();
         }
     }
     

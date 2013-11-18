@@ -66,9 +66,6 @@ public class Parser {
                                     idxOfValue = (int) Integer.parseInt(valuesOfRecord[i].substring(0, valuesOfRecord[i].length()-4));
                                 }
                             }
-                            if(idxOfValue == -1) {
-                                System.out.println(valuesOfRecord[0] + ","+ i +":" +valuesOfRecord[i]);
-                            }
                             record.add(i,idxOfValue);
                         }
                         _dataset.addData(record);
